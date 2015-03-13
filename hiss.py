@@ -15,10 +15,12 @@ def make_hist(x):
 	plt.hist(x,bins=10)
 	plt.show()
 	
-filepath = "/Users/lekova/Desktop/dl1.mirnas.mature.ratio.csv"	
-def load_data_from_file(filepath):
-	array = pd.read_csv(filepath,sep='[\t,]',engine='python')
-	print(array)
+def load_data_from_file(filepaths):
+	input_data = []
+	for filepath in filepaths:
+		input_data.append(pd.read_csv(filepath,sep='[\t,]',engine='python'))
+	data = (pd.concat(input_data,ignore_index=True))
 	
-	
-load_data_from_file(filepath)
+filepath = "/Users/lekova/Desktop/dl1.mirnas.mature.ratio.txt"
+filepath2 = "/Users/lekova/Desktop/dl1.mirnas.mature.ratio.csv"
+load_data_from_file([filepath,filepath2])
