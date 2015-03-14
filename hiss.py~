@@ -19,17 +19,20 @@ def load_data_from_file(filepaths,concatenate,groupbycolumn,grouping_column):
 	if concatenate:
 		input_data = (pd.concat(input_data,ignore_index=True))
 	if groupbycolumn:
+		grouped_input_data=[]
 		for datum in input_data:
-			input_data.remove(datum)
 			grouped = datum.groupby(grouping_column)
 			for k,gp in grouped:
-				input_data.append(gp)
+				grouped_input_data.append(gp)
+		input_data = grouped_input_data
 	return input_data
 
 def main():	
 	filepath = "C:/Users/Virzhiniya/Desktop/test.txt"
 	filepath2 = "C:/Users/Virzhiniya/Desktop/test.txt"
 	input_data = load_data_from_file([filepath,filepath2],concatenate=False,groupbycolumn=True,grouping_column='grouping')
+	
+	print(input_data)
 
 	Xcolname = 's5/s6'
 	

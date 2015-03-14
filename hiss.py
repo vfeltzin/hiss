@@ -13,9 +13,7 @@ def parse_command_line_input():
 #Input options: 1) one histogram from one spreadsheet, one histogram from multiple spreadsheets, multiple histograms from multiple spreadsheets, multiple histograms from one spreadsheet.
 
 def load_data_from_file(filepaths,concatenate,groupbycolumn,grouping_column):
-	input_data = []
-	for filepath in filepaths:
-		input_data.append(pd.read_csv(filepath,sep='[\t,]',engine='python'))
+	input_data = [pd.read_csv(filepath,sep='[\t,]',engine='python') for filepath in filepaths]
 	if concatenate:
 		input_data = (pd.concat(input_data,ignore_index=True))
 	if groupbycolumn:
