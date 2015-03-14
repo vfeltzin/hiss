@@ -9,6 +9,8 @@ def parse_command_line_input():
 	parser.add_argument('-i','--inputfiles', required=True,action='append')
 	parser.add_argument('--concatenate',action='store_true')
 	parser.add_argument('--groupbycolumn',action='store_true')
+	parser.add_argument('--Xcolname', required=True)
+	parser.add_argument('-b','--bins',type=int)
 	args = parser.parse_args()
 	return args	
 	
@@ -31,20 +33,14 @@ def main():
 	#filepath = "C:/Users/Virzhiniya/Desktop/test.txt"
 	#filepath2 = "C:/Users/Virzhiniya/Desktop/test.txt"
 	args = parse_command_line_input()
-	input_data = load_data_from_file(args.inputfiles,args.concatenate,args.groupbycolumn,grouping_column='grouping')
+	input_data = load_data_from_file(args.inputfiles,args.concatenate,args.groupbycolumn,args.grouping_column)
 	
 	print(input_data)
-
-	Xcolname = 's5/s6'
-	
 	pd.options.display.mpl_style = 'default'	
-
-	bins=10
-
 	n=2
 
 	for datum in input_data:
-		datum[Xcolname].hist(bins=bins)
+		datum[args.Xcolname].hist(bins=args.bins)
 		plt.show()
 
 	
