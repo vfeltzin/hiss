@@ -35,7 +35,8 @@ def main():
 
 	for datum in input_data:
 		datum[Xcolname].hist(bins=bins)
-		plt.show()
+
+	plt.show()
 
 	
 if __name__ == '__main__':
