@@ -12,18 +12,27 @@ def parse_command_line_input():
 	
 #Input options: 1) one histogram from one spreadsheet, one histogram from multiple spreadsheets, multiple histograms from multiple spreadsheets, multiple histograms from one spreadsheet.
 
-def load_data_from_file(filepaths,concatenate):
+def load_data_from_file(filepaths,concatenate,groupbycolumn,grouping_column):
 	input_data = []
 	for filepath in filepaths:
 		input_data.append(pd.read_csv(filepath,sep='[\t,]',engine='python'))
 	if concatenate:
 		input_data = (pd.concat(input_data,ignore_index=True))
+	if groupbycolumn:
+		grouped_input_data=[]
+		for datum in input_data:
+			grouped = datum.groupby(grouping_column)
+			for k,gp in grouped:
+				grouped_input_data.append(gp)
+		input_data = grouped_input_data
 	return input_data
 
 def main():	
 	filepath = "C:/Users/Virzhiniya/Desktop/test.txt"
-	filepath2="C:/Users/Virzhiniya/Desktop/test.txt"
-	input_data = load_data_from_file([filepath,filepath2],concatenate=False)
+	filepath2 = "C:/Users/Virzhiniya/Desktop/test.txt"
+	input_data = load_data_from_file([filepath,filepath2],concatenate=False,groupbycolumn=True,grouping_column='grouping')
+	
+	print(input_data)
 
 	Xcolname = 's5/s6'
 	
