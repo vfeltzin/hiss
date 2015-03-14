@@ -6,9 +6,11 @@ import pandas as pd
 
 def parse_command_line_input():
 	parser = argparse.ArgumentParser()
-	parser.add_argument('-i','--input_filepath', help='Path to the input file with forward reads', required=True)
-	command_line_args=parser.parse_args()	
-	return command_line_args		
+	parser.add_argument('-i','--inputfiles', required=True,action='append')
+	parser.add_argument('--concatenate',action='store_true')
+	parser.add_argument('--groupbycolumn',action='store_true')
+	args = parser.parse_args()
+	return args	
 	
 #Input options: 1) one histogram from one spreadsheet, one histogram from multiple spreadsheets, multiple histograms from multiple spreadsheets, multiple histograms from one spreadsheet.
 
@@ -26,9 +28,10 @@ def load_data_from_file(filepaths,concatenate,groupbycolumn,grouping_column):
 	return input_data
 
 def main():	
-	filepath = "C:/Users/Virzhiniya/Desktop/test.txt"
-	filepath2 = "C:/Users/Virzhiniya/Desktop/test.txt"
-	input_data = load_data_from_file([filepath,filepath2],concatenate=False,groupbycolumn=True,grouping_column='grouping')
+	#filepath = "C:/Users/Virzhiniya/Desktop/test.txt"
+	#filepath2 = "C:/Users/Virzhiniya/Desktop/test.txt"
+	args = parse_command_line_input()
+	input_data = load_data_from_file(args.inputfiles,args.concatenate,args.groupbycolumn,grouping_column='grouping')
 	
 	print(input_data)
 
