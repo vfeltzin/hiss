@@ -19,7 +19,7 @@ def parse_command_line_input():
 def load_data_from_file(filepaths,concatenate,groupbycolumn):
 	input_data = [pd.read_csv(filepath,sep='[\t,]',engine='python') for filepath in filepaths]
 	if concatenate:
-		input_data = (pd.concat(input_data,ignore_index=True))
+		input_data = [pd.concat(input_data,ignore_index=True)]
 	if groupbycolumn != None:
 		grouped_input_data=[]
 		for datum in input_data:
