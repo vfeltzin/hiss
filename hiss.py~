@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import scipy.stats
 import math
+import os
 
 def parse_command_line_input():
 	parser = argparse.ArgumentParser()
@@ -17,9 +18,19 @@ def parse_command_line_input():
 	return args	
 	
 def load_data_from_file(filepaths,concatenate,groupbycolumn):
+	for apath in filepaths:
+		apath = os.path.abspath(apath)
+		if os.path.isdir(apath):
+			for (dirpaths, dirnames, filenames) in os.walk(apath):
+				filepaths.extend(filenames)
+				break
+		elif os.path.isfile(apath):
+			pass
+		else:
+			print('ERROR: No such file or directory ' + filepath)
 	input_data = [pd.read_csv(filepath,sep='[\t,]',engine='python') for filepath in filepaths]
 	if concatenate:
-		input_data = pd.concat(input_data,ignore_index=True)
+		input_data = [pd.concat(input_data,ignore_index=True)]
 	if groupbycolumn != None:
 		grouped_input_data=[]
 		for datum in input_data:

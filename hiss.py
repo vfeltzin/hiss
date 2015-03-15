@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import scipy.stats
 import math
+import os
 
 def parse_command_line_input():
 	parser = argparse.ArgumentParser()
@@ -16,6 +17,19 @@ def parse_command_line_input():
 	args = parser.parse_args()
 	return args	
 	
+def process_paths(filepaths):
+	for apath in filepaths:
+		apath = os.path.abspath(apath)
+		if os.path.isdir(apath):
+			for (dirpaths, dirnames, filenames) in os.walk(apath):
+				filepaths.extend(filenames)
+				break
+		elif os.path.isfile(apath):
+			pass
+		else:
+			print('ERROR: No such file or directory ' + filepath)
+	return filepaths
+
 def load_data_from_file(filepaths,concatenate,groupbycolumn):
 	input_data = [pd.read_csv(filepath,sep='[\t,]',engine='python') for filepath in filepaths]
 	if concatenate:
@@ -36,6 +50,7 @@ def determine_bins_for_hist(x):
 
 def main():	
 	args = parse_command_line_input()
+	filepaths = process_paths(filepaths)
 	input_data = load_data_from_file(args.inputfiles, args.concatenate, args.groupbycolumn)
 	
 	print(input_data)
