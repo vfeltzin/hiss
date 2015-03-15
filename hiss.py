@@ -10,6 +10,7 @@ import os
 def parse_command_line_input():
 	parser = argparse.ArgumentParser()
 	parser.add_argument('-i','--inputfiles', required=True,action='append')
+	parser.add_argument('-o','--output_dir',required=True)
 	parser.add_argument('--concatenate',action='store_true')
 	parser.add_argument('--Xcolname', required=True)
 	parser.add_argument('-b','--bins',type=int)
@@ -30,6 +31,14 @@ def process_paths(filepaths):
 			print('ERROR: No such file or directory ' + filepath)
 	return filepaths
 
+def process_output_dir(dirpath):
+	dirpath = os.path.abspath(dirpath)
+	if os.path.isdir(dirpath):
+		pass
+	else:
+		print('ERROR: No such directory ' + dirpath)
+	return dirpath
+
 def load_data_from_file(filepaths,concatenate,groupbycolumn):
 	input_data = [pd.read_csv(filepath,sep='[\t,]',engine='python') for filepath in filepaths]
 	if concatenate:
@@ -48,22 +57,23 @@ def determine_bins_for_hist(x):
 	print("Optimal number of bins for a histogram of these data according to Doane's formula: " + str(Doanes_bins))
 	return Doanes_bins
 
-def make_hist(input_data,Xcolname,bins):
+def make_hist(input_data,Xcolname,bins,output_dir):
 	for datum in input_data:
 		if bins == None:
 			bins = determine_bins_for_hist(datum[Xcolname])
 		datum[Xcolname].hist(bins=bins)
-		plt.show()
+		plt.savefig(os.path.abspath(output_dir+'\\'+'hist'+str(input_data.index(datum)+1)+'.png'))
 
 def main():	
 	args = parse_command_line_input()
 	filepaths = process_paths(args.inputfiles)
+	output_dir = process_output_dir(args.output_dir)
 	input_data = load_data_from_file(filepaths, args.concatenate, args.groupbycolumn)
 	
 	print(input_data)
 	pd.options.display.mpl_style = 'default'	
 	
-	make_hist (input_data,args.Xcolname,args.bins)
+	make_hist (input_data,args.Xcolname,args.bins,output_dir)
 
 	
 if __name__ == '__main__':
