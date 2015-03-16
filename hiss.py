@@ -57,12 +57,12 @@ def determine_bins_for_hist(x):
 	print("Optimal number of bins for a histogram of these data according to Doane's formula: " + str(Doanes_bins))
 	return Doanes_bins
 
-def make_hist(input_data,Xcolname,bins,output_dir):
+def make_hist(input_data,Xcolname,bins,output_dir,groupbycolumn):
 	for datum in input_data:
 		if bins == None:
 			bins = determine_bins_for_hist(datum[Xcolname])
 		datum[Xcolname].hist(bins=bins)
-		plt.savefig(os.path.abspath(output_dir+'\\'+'hist'+str(input_data.index(datum)+1)+'.png'))
+		plt.savefig(os.path.abspath(output_dir+'/'+groupbycolumn+'_hist'+str(input_data.index(datum)+1)+'.png'))
 
 def main():	
 	args = parse_command_line_input()
@@ -73,7 +73,7 @@ def main():
 	print(input_data)
 	pd.options.display.mpl_style = 'default'	
 	
-	make_hist (input_data,args.Xcolname,args.bins,output_dir)
+	make_hist (input_data,args.Xcolname,args.bins,output_dir,args.groupbycolumn)
 
 	
 if __name__ == '__main__':
