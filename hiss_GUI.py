@@ -16,6 +16,8 @@ class Application(ttk.Frame):
 		self.output_dir = tk.StringVar()
 		self.concatenate = tk.IntVar()
 		self.groupbycolumn = tk.IntVar()
+		self.bins = tk.IntVar()
+		self.bintext = tk.StringVar()
 		self.grouping_column = tk.StringVar()
 		
 		self.grid()
@@ -47,6 +49,7 @@ class Application(ttk.Frame):
 		self.savefilebutton = ttk.Button(self.fileframe, text='Browse', command=self.choose_output_dir)
 		self.savefilebutton.grid(row=3,column=1)
 		
+	def create_more_widgets(self):
 		self.optframe = ttk.Frame(self, padding=10)
 		self.optframe.grid()
 		self.concatcheck = ttk.Checkbutton(self.optframe, text='Combine data from multiple files', variable=self.concatenate)
@@ -56,8 +59,10 @@ class Application(ttk.Frame):
 		self.choosecolumnbutton = ttk.Menubutton(self.optframe, text='Choose column')
 		self.binlabel = ttk.Label(self.optframe, text='Number of bins:')
 		self.binlabel.grid(row=6, column=0)
-		self.binbox = tk.Spinbox(self.optframe, from_=10, to=150, increment=1, width=5)
-		self.binbox.grid(row=6, column=1)
+		self.binslide = ttk.Scale(self.optframe, from_=10, to=150, variable=self.bins, value=50, command=self.change_bintext)
+		self.binslide.grid(row=6, column=1)
+		self.binvalue = ttk.Label(self.optframe, justify='center', textvariable=self.bintext)
+		self.binvalue.grid(row=7, column=1)
 
 		self.buttonframe = ttk.Frame(self, padding=10, style='TFrame')
 		self.buttonframe.grid()
@@ -67,6 +72,7 @@ class Application(ttk.Frame):
 	def choose_input_files(self):
 		filepaths_to_open = fdialog.askopenfilenames()
 		self.filepaths_to_open.set(filepaths_to_open)
+		self.create_more_widgets()
 		
 	def choose_output_dir(self):
 		output_dir = fdialog.askdirectory()
@@ -78,8 +84,16 @@ class Application(ttk.Frame):
 		else:
 			self.choosecolumnbutton.grid_forget()
 
+	def change_bintext(self, binval):
+		binval = int(round(float(binval)))
+		self.bintext.set(str(binval))
+		
 	def make_hist(self):
-		hiss.make_hist(self.filepaths_to_open.get(), self.concatenate, int(self.binbox.get()), self.output_dir.get(), self.groupbycolumn)
+		fself.ilepaths = hiss.process_paths(self.filepaths_to_open)
+		self.output_dir = hiss.process_output_dir(self.output_dir)
+		self.input_data = hiss.load_data_from_file(self.filepaths, self.concatenate, self.groupbycolumn)
+
+		hiss.make_hist(self.filepaths_to_open.get(), self.concatenate, int(self.bins.get()), self.output_dir.get(), self.groupbycolumn)
 
 				
 app = Application()
