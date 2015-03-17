@@ -48,7 +48,7 @@ class Application(ttk.Frame):
 		self.optframe.grid()
 		self.concatcheck = ttk.Checkbutton(self.optframe, text='Combine data from multiple files.', variable=self.concatenate)
 		self.concatcheck.grid(row=4, column=0)
-		self.groupbycheck = ttk.Checkbutton(self.optframe, text='Separate data by value in one column.', variable=self.groupbycolumn, command=self.show_groupcolumnmenu)
+		self.groupbycheck = ttk.Checkbutton(self.optframe, text='Separate data by value in one column.', variable=self.groupbycolumn)
 		self.groupbycheck.grid(row=5, column=0)
 
 		self.buttonframe = ttk.Frame(self, padding=10, style='TFrame')
@@ -63,12 +63,6 @@ class Application(ttk.Frame):
 	def choose_output_dir(self):
 		output_dir = fdialog.askdirectory()
 		self.output_dir.set(output_dir)
-
-	def show_groupcolumnmenu(self):
-		if self.groupbycolumn == 1:
-			#Show menu to choose column to group by.
-		else:
-			#Hide menu to choose column to group by.
 
 	def make_hist(self):
 		hiss.make_hist(self.filepaths_to_open)
