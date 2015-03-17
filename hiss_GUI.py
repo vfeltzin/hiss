@@ -16,6 +16,7 @@ class Application(ttk.Frame):
 		self.output_dir = tk.StringVar()
 		self.concatenate = tk.IntVar()
 		self.groupbycolumn = tk.IntVar()
+		self.grouping_column = tk.StringVar()
 		
 		self.grid()
 		self.create_styles()
@@ -48,10 +49,15 @@ class Application(ttk.Frame):
 		
 		self.optframe = ttk.Frame(self, padding=10)
 		self.optframe.grid()
-		self.concatcheck = ttk.Checkbutton(self.optframe, text='Combine data from multiple files.', variable=self.concatenate)
+		self.concatcheck = ttk.Checkbutton(self.optframe, text='Combine data from multiple files', variable=self.concatenate)
 		self.concatcheck.grid(row=4, column=0)
-		self.groupbycheck = ttk.Checkbutton(self.optframe, text='Separate data by value in one column.', variable=self.groupbycolumn, command=self.show_groupcolumnmenu)
+		self.groupbycheck = ttk.Checkbutton(self.optframe, text='Separate data by value in one column', variable=self.groupbycolumn, command=self.show_groupcolumnmenu)
 		self.groupbycheck.grid(row=5, column=0)
+		self.choosecolumnbutton = ttk.Menubutton(self.optframe, text='Choose column')
+		self.binlabel = ttk.Label(self.optframe, text='Number of bins:')
+		self.binlabel.grid(row=6, column=0)
+		self.binbox = tk.Spinbox(self.optframe, from_=10, to=150, increment=1, width=5)
+		self.binbox.grid(row=6, column=1)
 
 		self.buttonframe = ttk.Frame(self, padding=10, style='TFrame')
 		self.buttonframe.grid()
@@ -67,21 +73,19 @@ class Application(ttk.Frame):
 		self.output_dir.set(output_dir)
 
 	def show_groupcolumnmenu(self):
-		if self.groupbycolumn == 1:
-			#Show menu to choose column to group by.
-			pass
+		if self.groupbycolumn.get()==1:
+			self.choosecolumnbutton.grid(row=5, column=1)
 		else:
-			#Hide menu to choose column to group by.
-			pass
+			self.choosecolumnbutton.grid_forget()
 
 	def make_hist(self):
-		hiss.make_hist(self.filepaths_to_open)
+		hiss.make_hist(self.filepaths_to_open.get(), self.concatenate, int(self.binbox.get()), self.output_dir.get(), self.groupbycolumn)
 
 				
 app = Application()
 
 if sys.platform == 'darwin':
-	os.system('''/usr/bin/osascript -e 'tell app "Finder" to set frontmost of process "Python" to true' ''')
+	os.system('''/usr/bin/osascript -e 'tell app "Finder" to set frontmost of process "python" to true' ''')
 
 app.master.title('Histographer')
 
