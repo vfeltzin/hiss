@@ -4,6 +4,8 @@ import tkinter as tk
 import tkinter.ttk as ttk
 import tkinter.filedialog as fdialog
 import hiss
+import sys
+import os
 
 class Application(ttk.Frame):
 	
@@ -34,14 +36,14 @@ class Application(ttk.Frame):
 		self.openfilelabel.grid(row=0)
 		self.openfileentry = ttk.Entry(self.fileframe, textvariable = self.filepaths_to_open, width=40)
 		self.openfileentry.grid(row=1,column=0)
-		self.openfilebutton = ttk.Button(self.fileframe, text='Browse', command=self.choose_input_files, style='Gray.TButton')
+		self.openfilebutton = ttk.Button(self.fileframe, text='Browse', command=self.choose_input_files)
 		self.openfilebutton.grid(row=1,column=1)
 		
 		self.outputdirlabel = ttk.Label(self.fileframe, text='Select folder to save histograms:', justify='left')
 		self.outputdirlabel.grid(row=2)
 		self.outputdirentry = ttk.Entry(self.fileframe, textvariable = self.output_dir, width=40)
 		self.outputdirentry.grid(row=3,column=0)
-		self.savefilebutton = ttk.Button(self.fileframe, text='Browse', command=self.choose_output_dir, style='Gray.TButton')
+		self.savefilebutton = ttk.Button(self.fileframe, text='Browse', command=self.choose_output_dir)
 		self.savefilebutton.grid(row=3,column=1)
 		
 		self.optframe = ttk.Frame(self, padding=10)
@@ -53,7 +55,7 @@ class Application(ttk.Frame):
 
 		self.buttonframe = ttk.Frame(self, padding=10, style='TFrame')
 		self.buttonframe.grid()
-		self.histbutton = ttk.Button(self.buttonframe, text='Make histograms', command=self.make_hist, style='TButton')
+		self.histbutton = ttk.Button(self.buttonframe, text='Make histograms', command=self.make_hist)
 		self.histbutton.grid()
 				
 	def choose_input_files(self):
@@ -67,8 +69,10 @@ class Application(ttk.Frame):
 	def show_groupcolumnmenu(self):
 		if self.groupbycolumn == 1:
 			#Show menu to choose column to group by.
+			pass
 		else:
 			#Hide menu to choose column to group by.
+			pass
 
 	def make_hist(self):
 		hiss.make_hist(self.filepaths_to_open)
@@ -76,6 +80,9 @@ class Application(ttk.Frame):
 				
 app = Application()
 
-app.master.title('Sample application')
+if sys.platform == 'darwin':
+	os.system('''/usr/bin/osascript -e 'tell app "Finder" to set frontmost of process "Python" to true' ''')
+
+app.master.title('Histographer')
 
 app.mainloop()
