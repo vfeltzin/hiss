@@ -7,6 +7,12 @@ import scipy.stats
 import math
 import os
 
+##To do:
+##Rewrite this so that most functions take a single element and the for-loop is executed in the main fuction instead
+##Add a way to handle excel spreadsheets - pandas can do it, so I might as well put it in
+##What happens if there are no header columns in the supplied spreadsheets
+##Sort out the file naming logic again
+
 def parse_command_line_input():
 	parser = argparse.ArgumentParser()
 	parser.add_argument('-i','--inputfiles', required=True,action='append')
