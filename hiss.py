@@ -40,9 +40,10 @@ def concatenate_data (list_of_dataframes):
 	return concatenated
 	
 def group_data_by_column(dataframe,groupbycolumn)
-#This function takes a pandas DataFrame object and a string specifying the name of a column in the DataFrame. It separates the data into two or more smaller DataFrames based on the values in the specified column, and returns a list of the smaller DataFrames.
+"""This function takes a pandas DataFrame object and a string specifying the name of a column in the DataFrame. It separates the data into two or more smaller DataFrames based on the values in the specified column, and returns a list of the smaller DataFrames."""
 	grouped = dataframe.groupby(groupbycolumn)
 	input_dataframes = [gp for k,gp in grouped]
+	return input_dataframes
 	
 def determine_bins_for_hist(x):
 	Doanes_bins = (1 + mathlog(x.count(),2) + moment(x,3))
@@ -66,8 +67,10 @@ def main():
 		input_data = [concatenate_data(input_data)]
 		
 	if args.groupbycolumn != None:
-		input_data = []
-			for 
+		grouped_temp = []
+			for datum in input_data:
+				grouped_temp.extend(group_data_by_column(datum))
+		input_data = grouped_temp
 	
 	pd.options.display.mpl_style = 'default'	
 	
