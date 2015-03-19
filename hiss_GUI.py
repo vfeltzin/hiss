@@ -89,9 +89,23 @@ class Application(ttk.Frame):
 		self.bintext.set(str(binval))
 		
 	def make_hist(self):
-		fself.ilepaths = hiss.process_paths(self.filepaths_to_open)
-		self.output_dir = hiss.process_output_dir(self.output_dir)
-		self.input_data = hiss.load_data_from_file(self.filepaths, self.concatenate, self.groupbycolumn)
+		list_of_input_filepaths = [hiss.process_path(apath) for apath in self.filepaths_to_open.get()]
+		output_dir = hiss.process_path(self.output_dir,get())
+		self.input_data = [hiss.load_data_from_file(apath) for apath in list_of_input_filepaths]
+
+		if args.concatenate.get()==1:
+			input_data = [concatenate_data(input_data)]
+				
+		if self.groupbycolumn == 1:
+			grouped_temp = []
+				for datum in input_data:
+					grouped_temp.extend(group_data_by_column(datum))
+			input_data = grouped_temp
+			
+		pd.options.display.mpl_style = 'default'	
+			
+		make_hist (input_data,args.Xcolname,args.bins,output_dir,args.groupbycolumn)
+
 
 		hiss.make_hist(self.filepaths_to_open.get(), self.concatenate, int(self.bins.get()), self.output_dir.get(), self.groupbycolumn)
 

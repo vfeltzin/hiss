@@ -36,6 +36,7 @@ def load_data_from_file(filepath):
 	return input_dataframe
 	
 def concatenate_data (list_of_dataframes):
+"""Concatenate list of pandas DataFrames."""
 	cooncatenated = pd.concat(input_data,ignore_index=True)
 	return concatenated
 	
@@ -46,6 +47,7 @@ def group_data_by_column(dataframe,groupbycolumn)
 	return input_dataframes
 	
 def determine_bins_for_hist(x):
+"""Estimate optimal number of bins for a histogram based on Doane's formula"""
 	Doanes_bins = (1 + mathlog(x.count(),2) + moment(x,3))
 	print("Optimal number of bins for a histogram of these data according to Doane's formula: " + str(Doanes_bins))
 	return Doanes_bins
