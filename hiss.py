@@ -27,8 +27,8 @@ def parse_command_line_input():
 	
 def process_path(apath):
 	filepath = os.path.abspath(apath)
-		if os.path.exists(apath) == False:    ##This should be changed to try, except statement
-			print('ERROR: No such file or directory ' + apath)
+	if os.path.exists(apath) == False:    ##This should be changed to try, except statement
+		print('ERROR: No such file or directory ' + apath)
 	return apath
 
 def load_data_from_file(filepath):
@@ -36,18 +36,18 @@ def load_data_from_file(filepath):
 	return input_dataframe
 	
 def concatenate_data (list_of_dataframes):
-"""Concatenate list of pandas DataFrames."""
+	"""Concatenate list of pandas DataFrames."""
 	cooncatenated = pd.concat(input_data,ignore_index=True)
 	return concatenated
 	
-def group_data_by_column(dataframe,groupbycolumn)
-"""This function takes a pandas DataFrame object and a string specifying the name of a column in the DataFrame. It separates the data into two or more smaller DataFrames based on the values in the specified column, and returns a list of the smaller DataFrames."""
+def group_data_by_column(dataframe,groupbycolumn):
+	"""This function takes a pandas DataFrame object and a string specifying the name of a column in the DataFrame. It separates the data into two or more smaller DataFrames based on the values in the specified column, and returns a list of the smaller DataFrames."""
 	grouped = dataframe.groupby(groupbycolumn)
 	input_dataframes = [gp for k,gp in grouped]
 	return input_dataframes
 	
 def determine_bins_for_hist(x):
-"""Estimate optimal number of bins for a histogram based on Doane's formula"""
+	"""Estimate optimal number of bins for a histogram based on Doane's formula"""
 	Doanes_bins = (1 + mathlog(x.count(),2) + moment(x,3))
 	print("Optimal number of bins for a histogram of these data according to Doane's formula: " + str(Doanes_bins))
 	return Doanes_bins
@@ -70,7 +70,7 @@ def main():
 		
 	if args.groupbycolumn != None:
 		grouped_temp = []
-			for datum in input_data:
+		for datum in input_data:
 				grouped_temp.extend(group_data_by_column(datum))
 		input_data = grouped_temp
 	

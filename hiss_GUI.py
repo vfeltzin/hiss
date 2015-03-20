@@ -90,7 +90,7 @@ class Application(ttk.Frame):
 		
 	def make_hist(self):
 		list_of_input_filepaths = [hiss.process_path(apath) for apath in self.filepaths_to_open.get()]
-		output_dir = hiss.process_path(self.output_dir,get())
+		output_dir = hiss.process_path(self.output_dir.get())
 		self.input_data = [hiss.load_data_from_file(apath) for apath in list_of_input_filepaths]
 
 		if args.concatenate.get()==1:
@@ -98,8 +98,8 @@ class Application(ttk.Frame):
 				
 		if self.groupbycolumn == 1:
 			grouped_temp = []
-				for datum in input_data:
-					grouped_temp.extend(group_data_by_column(datum))
+			for datum in input_data:
+				grouped_temp.extend(group_data_by_column(datum))
 			input_data = grouped_temp
 			
 		pd.options.display.mpl_style = 'default'	
